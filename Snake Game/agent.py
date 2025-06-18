@@ -10,12 +10,13 @@ MAX_MEMORY = 100000
 BATCH_SIZE = 1000
 LR = 0.001
 
+
 class Agent:
     def __init__(self):
         self.n_games = 0
-        self.epsilon = 0 # randomness
-        self.gamma = 0.9 # discount rate 0.8~0.9
-        self.memory = deque(maxlen=MAX_MEMORY) # popleft()
+        self.epsilon = 0  # randomness
+        self.gamma = 0.9  # discount rate 0.8~0.9
+        self.memory = deque(maxlen=MAX_MEMORY)  # popleft()
         self.model = Linear_QNet(11, 256, 3)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
 
@@ -57,20 +58,22 @@ class Agent:
             dir_d,
 
             # Food location
-            game.food.x > game.food.x, # food right
-            game.food.x < game.head.x, # food left
-            game.food.y < game.head.y, # food up
+            game.food.x > game.food.x,  # food right
+            game.food.x < game.head.x,  # food left
+            game.food.y < game.head.y,  # food up
             game.food.y > game.head.y  # food down
         ]
 
         return np.array(state, dtype=int)
 
     def remember(self, state, action, reward, next_state, done):
-        self.memory.append((state, action, reward, next_state, done)) # popleft if MAX_MEMORY is reached
+        # popleft if MAX_MEMORY is reached
+        self.memory.append((state, action, reward, next_state, done))
 
     def train_long_memory(self):
         if len(self.memory) > BATCH_SIZE:
-            mini_sample = random.sample(self.memory, BATCH_SIZE) # list of tuples
+            mini_sample = random.sample(
+                self.memory, BATCH_SIZE)  # list of tuples
         else:
             mini_sample = self.memory
 
@@ -97,6 +100,7 @@ class Agent:
 
         return final_move
 
+
 def train():
     plot_scores = []
     plot_mean_scores = []
@@ -116,7 +120,8 @@ def train():
         state_new = agent.get_state(game)
 
         # train short memory
-        agent.train_short_memory(state_old, final_move, reward, state_new, done)
+        agent.train_short_memory(
+            state_old, final_move, reward, state_new, done)
 
         # remember
         agent.remember(state_old, final_move, reward, state_new, done)
@@ -138,6 +143,7 @@ def train():
             mean_score = total_score / agent.n_games
             plot_mean_scores.append(mean_score)
             plot(plot_scores, plot_mean_scores)
+
 
 if __name__ == "__main__":
     train()
