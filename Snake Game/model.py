@@ -22,6 +22,15 @@ class Linear_QNet(nn.Module):
         file_name = os.path.join(model_folder_path, file_name)
         torch.save(self.state_dict(), file_name)
 
+    def load(self, file_name='model.pth'):
+        model_folder_path = './model'
+        file_name = os.path.join(model_folder_path, file_name)
+        if os.path.exists(file_name):
+            self.load_state_dict(torch.load(file_name))
+            self.eval()
+            return True
+        return False
+
 class QTrainer:
     def __init__(self, model, lr, gamma):
         self.lr = lr
@@ -45,7 +54,6 @@ class QTrainer:
             reward = torch.unsqueeze(reward, 0)
             done = (done, )
 
-        # 1: predicted Q values with current state
         pred = self.model(state)
 
         target = pred.clone()
@@ -56,13 +64,8 @@ class QTrainer:
 
             target[idx][torch.argmax(action).item()] = Q_new
 
-        # 2: Q_new = r + y * max(next_predicted Q value)
-        # pred.clone()
-        # preds[argmax(action)] = Q_new
         self.optimiser.zero_grad()
         loss = self.criterion(target, pred)
         loss.backward()
 
         self.optimiser.step()
-
-
