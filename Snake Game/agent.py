@@ -17,10 +17,7 @@ class Agent:
         self.epsilon = 80  # randomness
         self.gamma = 0.9  # discount rate 0.8~0.9
         self.memory = deque(maxlen=MAX_MEMORY)  # popleft()
-        self.model = Linear_QNet(11, 256, 3)
-        # Try to load saved model if it exists
-        if self.model.load():
-            print('Loaded model from saved weights!')
+        self.model = Linear_QNet(15, 256, 3)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
 
     def get_state(self, game):
@@ -64,7 +61,13 @@ class Agent:
             game.food.x > game.head.x,  # food right
             game.food.x < game.head.x,  # food left
             game.food.y < game.head.y,  # food up
-            game.food.y > game.head.y  # food down
+            game.food.y > game.head.y,  # food down
+
+            # Can reach 80% of empty cells
+            game.is_move_safe_and_accessible(dir_l),
+            game.is_move_safe_and_accessible(dir_r),
+            game.is_move_safe_and_accessible(dir_u),
+            game.is_move_safe_and_accessible(dir_d),
         ]
 
         return np.array(state, dtype=int)
@@ -90,13 +93,13 @@ class Agent:
 
     def get_action(self, state):
         # random moves: tradeoff exploration / exploitation
-        self.epsilon = 160 - self.n_games
+        self.epsilon = max(160 - self.n_games, 1)
         final_move = [0, 0, 0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0, 2)
             final_move[move] = 1
         else:
-            state0 = torch.tensor(state, dtype=torch.float)
+            state0 = torch.tensor(np.array(state), dtype=torch.float)
             prediction = self.model(state0)
             move = torch.argmax(prediction).item()
             final_move[move] = 1
