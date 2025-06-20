@@ -31,14 +31,19 @@ SPEED = 100
 
 class SnakeGameAI:
 
-    def __init__(self, w=640, h=480):
+    def __init__(self, w=640, h=480, visualize=True):
         self.width = w
         self.height = h
+        self.visualize = visualize
 
-        # init display
-        self.display = pygame.display.set_mode((self.width, self.height))
-        pygame.display.set_caption('Snake Game')
-        self.clock = pygame.time.Clock()
+        # init display only if visualize is True
+        if self.visualize:
+            self.display = pygame.display.set_mode((self.width, self.height))
+            pygame.display.set_caption('Snake Game')
+            self.clock = pygame.time.Clock()
+        else:
+            self.display = None
+            self.clock = None
         self.reset()
 
     def reset(self):
@@ -65,12 +70,12 @@ class SnakeGameAI:
 
     def play_step(self, action):
         self.frame_iteration += 1
-        # 1. collect user input
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
+        # 1. collect user input (only if visualizing)
+        if self.visualize:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
         # 2. move
         self._move(action)
         self.snake.insert(0, self.head)
@@ -93,11 +98,13 @@ class SnakeGameAI:
 
         # 5. Check if board is 80% accessible
         if not self.is_move_safe_and_accessible(self.direction):
-            reward -= 10
+            reward += -10
 
-        # 6. update ui and clock
-        self._update_ui()
-        self.clock.tick(SPEED)
+        # 6. update ui and clock only if visualize is True
+        if self.visualize:
+            self._update_ui()
+            if self.clock:
+                self.clock.tick(SPEED)
         # 7. return game over and score
         game_over = False
         return reward, game_over, self.score
@@ -114,6 +121,8 @@ class SnakeGameAI:
         return False
 
     def _update_ui(self):
+        if not self.visualize:
+            return
         self.display.fill(BLACK)
 
         for point in self.snake:
