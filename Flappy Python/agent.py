@@ -7,11 +7,11 @@ from flappy_game_ai import FlappyGame
 from model import Linear_QNet, QTrainer, PrioritizedReplayBuffer
 from helper import plot
 
-
 MAX_MEMORY = 100000
 BATCH_SIZE = 128  # Smaller batch size for more frequent updates
 LR = 0.0005  # Lower learning rate for stability
 GAMMA = 0.99  # Higher discount factor to value future rewards more
+
 
 class Agent:
     def __init__(self):
@@ -63,25 +63,25 @@ class Agent:
         else:
             # If no next pipe, use default values
             next_horizontal_distance = 1.0  # Far away
-            next_vertical_distance = 0.0    # Center
+            next_vertical_distance = 0.0  # Center
 
         state = [
-            vertical_distance,      # Normalized vertical distance to pipe center
-            horizontal_distance,    # Normalized horizontal distance to pipe
-            bird_velocity,          # Normalized bird velocity
-            gap_size,               # Normalized gap size
-            next_horizontal_distance, # Distance to next pipe
-            next_vertical_distance    # Vertical distance to next pipe center
+            vertical_distance,  # Normalized vertical distance to pipe center
+            horizontal_distance,  # Normalized horizontal distance to pipe
+            bird_velocity,  # Normalized bird velocity
+            gap_size,  # Normalized gap size
+            next_horizontal_distance,  # Distance to next pipe
+            next_vertical_distance  # Vertical distance to next pipe center
         ]
 
         return np.array(state, dtype=float)
 
     def remember(self, state, action, reward, next_state, done, priority=None):
-        """Store experience in prioritized replay buffer"""
+        """Store experience in prioritised replay buffer"""
         self.memory.add(state, action, reward, next_state, done, priority)
 
     def train_long_memory(self):
-        """Train on a batch from prioritized experience replay"""
+        """Train on a batch from prioritised experience replay"""
         if len(self.memory) < BATCH_SIZE:
             return  # Not enough samples to train
 
@@ -130,6 +130,7 @@ class Agent:
 
         return final_move
 
+
 def enhance_reward(reward, state_old, state_new, done, score):
     """Enhance the reward signal to provide more learning guidance"""
     enhanced_reward = reward
@@ -144,7 +145,7 @@ def enhance_reward(reward, state_old, state_new, done, score):
             enhanced_reward += 1  # Reward for getting closer to the center
 
         # Penalize extreme positions
-        if abs(state_new[0]) > 0.4:  # If far from center
+        if abs(state_new[0]) > 0.4:  # If far from centre
             enhanced_reward -= 0.5
 
         # Reward for maintaining stable flight
@@ -164,6 +165,7 @@ def enhance_reward(reward, state_old, state_new, done, score):
         enhanced_reward += score * 0.5
 
     return enhanced_reward
+
 
 def train():
     plot_scores = []
@@ -227,6 +229,7 @@ def train():
 
             # Reset game
             game.reset()
+
 
 if __name__ == "__main__":
     train()

@@ -55,7 +55,9 @@ class FlappyGame:
                            2*self.h // 3)  # The centre of the pipes is between 1/3 and 2/3 of the screen height
         self.top_pipes = [self._spawn_top_pipe(y)]
         self.bottom_pipes = [self._spawn_bottom_pipe(y)]
-        
+        self.visual_top_pipes = [self._spawn_top_pipe(y)]
+        self.visual_bottom_pipes = [self._spawn_bottom_pipe(y)]
+
         self.pipe_vel = 5
         self.pipe_waiter = 0
 
@@ -96,15 +98,25 @@ class FlappyGame:
                                         2*self.h // 3)
             self.top_pipes.insert(0,self._spawn_top_pipe(y))
             self.bottom_pipes.insert(0,self._spawn_bottom_pipe(y))
+            self.visual_top_pipes.insert(0, self._spawn_top_pipe(y))
+            self.visual_bottom_pipes.insert(0, self._spawn_bottom_pipe(y))
             self.pipe_waiter = 0
         else:
             for top_pipe in self.top_pipes:
                 top_pipe.x -= self.pipe_vel
             for bottom_pipe in self.bottom_pipes:
                 bottom_pipe.x -= self.pipe_vel
+            for top_pipe in self.visual_top_pipes:
+                top_pipe.x -= self.pipe_vel
+            for bottom_pipe in self.visual_bottom_pipes:
+                bottom_pipe.x -= self.pipe_vel
 
         # Remove pipes that have disappeared from the screen
-        if self.top_pipes[-1].x < -PIPE_WIDTH:
+        if self.visual_top_pipes[-1].x < -PIPE_WIDTH:
+            self.visual_top_pipes.pop()
+            self.visual_bottom_pipes.pop()
+
+        if self.top_pipes[-1].x + PIPE_WIDTH < self.bird.x:
             self.top_pipes.pop()
             self.bottom_pipes.pop()
 
@@ -154,7 +166,7 @@ class FlappyGame:
             else:
                 cloud.x -= self.pipe_vel//2
 
-        for top_pipe, bottom_pipe in zip(self.top_pipes, self.bottom_pipes):
+        for top_pipe, bottom_pipe in zip(self.visual_top_pipes, self.visual_bottom_pipes):
             d = pygame.draw.rect
             ds = self.display
             r = pygame.Rect
