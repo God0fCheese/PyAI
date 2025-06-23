@@ -14,10 +14,11 @@ RED3 = (150, 0, 0)
 GREEN1 = (0, 255, 0)
 GREEN2 = (0, 200, 0)
 GREEN3 = (0, 150, 0)
-BLUE1 = (0, 0, 255)
+BLUE1 = (100, 230, 255)
 BLUE2 = (0, 0, 200)
 BLUE3 = (0, 0, 150)
 YELLOW = (255, 255, 0)
+BROWN = (150, 75, 0)
 
 SPEED: int = 40
 GRAVITY: int = 1
@@ -26,6 +27,8 @@ PIPE_GAP: int = 100
 PIPE_WIDTH: int = 80
 FLAP_STRENGTH: int = 10
 BIRD_SIZE = 20
+PIPE_DECO = 5
+MAX_PIPE_VEL = 20
 
 class Point:
     def __init__(self, x:int, y:int):
@@ -55,6 +58,8 @@ class FlappyGame:
         
         self.pipe_vel = 5
         self.pipe_waiter = 0
+
+        self.clouds = [Point(random.randint(0, self.w), random.randint(0, self.h//2)) for _ in range(6)]
 
     def _spawn_top_pipe(self, y) -> Point:
         self.pipe_top = Point(self.w + 100, y - PIPE_GAP//2)
@@ -107,7 +112,7 @@ class FlappyGame:
         if self.top_pipes[-1].x + PIPE_WIDTH//2 < self.bird.x < self.top_pipes[-1].x + PIPE_WIDTH//2 + self.pipe_vel:
             self.score += 1
             if self.score % 5 == 0:
-                self.pipe_vel = min(self.pipe_vel + 1, 20)
+                self.pipe_vel = min(self.pipe_vel + 1, MAX_PIPE_VEL)
 
         # Update bird position
         self.bird_vel += GRAVITY
@@ -127,29 +132,61 @@ class FlappyGame:
         if not top_pipe.y < self.bird.y < bottom_pipe.y - BIRD_SIZE:
             # If the bird x is within a pipe
             if top_pipe.x - BIRD_SIZE < self.bird.x < top_pipe.x + PIPE_WIDTH:
-                print(f"hit pipe top: {top_pipe.x, top_pipe.y} bottom: {bottom_pipe.x + PIPE_WIDTH, bottom_pipe.y - BIRD_SIZE} bird: {self.bird.x, self.bird.y}")
                 return True
+        # Hit ground
         if self.bird.y > self.h - BIRD_SIZE:
-            print(f"hit ground: {self.bird.x, self.bird.y}")
             return True
+        # Else:
         return False
 
     def _update_ui(self) -> None:
-        self.display.fill(BLUE3)
-        
+        # Sky
+        self.display.fill(BLUE1)
+        # Ground
+        pygame.draw.rect(self.display, BROWN, pygame.Rect(0, self.h-20, self.w, 21 ))
+        # Clouds
+        for cloud in self.clouds:
+            random.seed(cloud.y)
+            pygame.draw.rect(self.display, WHITE, pygame.Rect(cloud.x, cloud.y, 40*random.randint(2,3), 40*random.randint(1,2)))
+            if cloud.x < -120:
+                cloud.x = self.w + random.randint(0, self.w//2)
+                cloud.y = random.randint(0, self.h//2)
+            else:
+                cloud.x -= self.pipe_vel//2
+
         for top_pipe, bottom_pipe in zip(self.top_pipes, self.bottom_pipes):
-            pygame.draw.rect(self.display, GREEN2, pygame.Rect(top_pipe.x, 0, PIPE_WIDTH, top_pipe.y))
-            pygame.draw.rect(self.display, RED2, pygame.Rect(bottom_pipe.x, bottom_pipe.y, PIPE_WIDTH, self.h - bottom_pipe.y))
-            #
+            d = pygame.draw.rect
+            ds = self.display
+            r = pygame.Rect
+            pd = PIPE_DECO
+            pw = PIPE_WIDTH
+            # Top main pipe
+            d(ds, GREEN3, r(top_pipe.x, 0, pw, top_pipe.y))
+            d(ds, GREEN1, r(top_pipe.x + pd, 0, pw - 2*pd, top_pipe.y - pd))
+            d(ds, GREEN2, r(top_pipe.x + pd + pw//3 + 1, 0, 2*pw//3 - 2*pd, top_pipe.y - pd))
+            # Top pipe tip
+            d(ds, GREEN3, r(top_pipe.x - pd, top_pipe.y - 4*pd, pw + 2*pd, 4*pd))
+            d(ds, GREEN1, r(top_pipe.x, top_pipe.y - 3*pd, pw, 2*pd))
+            d(ds, GREEN2, r(top_pipe.x + 2*pd + pw//3 + 1, top_pipe.y - 3*pd, 2*pw//3 - 2*pd, 2*pd))
+            # Bottom main pipe
+            d(ds, GREEN3, r(bottom_pipe.x, bottom_pipe.y, pw, self.h - bottom_pipe.y))
+            d(ds, GREEN1, r(bottom_pipe.x + pd, bottom_pipe.y, pw - 2*pd, self.h - bottom_pipe.y))
+            d(ds, GREEN2, r(bottom_pipe.x + pd + pw//3 + 1, bottom_pipe.y, 2*pw//3 - 2*pd, self.h-bottom_pipe.y))
+            # Bottom pipe tip
+            d(ds, GREEN3, r(bottom_pipe.x - pd, bottom_pipe.y, pw + 2*pd, 4*pd))
+            d(ds, GREEN1, r(bottom_pipe.x, bottom_pipe.y + pd, pw, 2*pd))
+            d(ds, GREEN2, r(bottom_pipe.x + 2*pd + pw//3 + 1, bottom_pipe.y + pd, 2*pw//3 - 2*pd, 2*pd))
+
             # pygame.draw.rect(self.display, WHITE, pygame.Rect(top_pipe.x, top_pipe.y, PIPE_WIDTH, 2))
             # pygame.draw.rect(self.display, WHITE, pygame.Rect(bottom_pipe.x, bottom_pipe.y, PIPE_WIDTH, 2))
-            #
+
             # pygame.draw.rect(self.display, BLACK, pygame.Rect(top_pipe.x, top_pipe.y, 2, 2))
             # pygame.draw.rect(self.display, BLACK, pygame.Rect(bottom_pipe.x, bottom_pipe.y, 2, 2))
 
         # Jump prediction
         # for i in range(30):
-        #     pygame.draw.rect(self.display, GREEN1, pygame.Rect(self.bird.x+5*i + BIRD_SIZE//2, self.bird.y + BIRD_SIZE//2 - FLAP_STRENGTH*i + GRAVITY*i**2 , 2, 2))
+        #     pygame.draw.rect(self.display, GREEN1, pygame.Rect(self.bird.x+5*i + BIRD_SIZE//2, self.bird.y +
+        #     BIRD_SIZE//2 - FLAP_STRENGTH*i + GRAVITY*i**2 , 2, 2))
 
         pygame.draw.rect(self.display, YELLOW, pygame.Rect(self.bird.x, self.bird.y, BIRD_SIZE, BIRD_SIZE))
         pygame.draw.rect(self.display, RED1, pygame.Rect(self.bird.x, self.bird.y, 2, 2))
