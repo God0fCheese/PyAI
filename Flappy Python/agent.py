@@ -6,7 +6,7 @@ from helper import plot
 import pygame
 
 # Genetic Algorithm Parameters
-POPULATION_SIZE = 50
+POPULATION_SIZE = 100
 MUTATION_RATE = 0.1
 CROSSOVER_RATE = 0.7
 ELITE_SIZE = 5

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3c628029-31d0-4a39-8774-f5337e6f4e90" name="Changes" comment="Generational Junie">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Flappy Python/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/Flappy Python/agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Flappy Python/flappy_game_ai.py" beforeDir="false" afterPath="$PROJECT_DIR$/Flappy Python/flappy_game_ai.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Flappy Python/model/best_model.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Flappy Python/model/best_model.pkl" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "God0fCheese"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/God0fCheese/PyAI.git",
+    "accountId": "3bbe8ac6-26ba-41ef-964b-e072ba23c970"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2ykvuZOLBk2hPTAdZX6O22DRgCk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.agent.executor": "Run",
+    "Python.flappy_game.executor": "Run",
+    "Python.flappy_game_ai.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/Users/henem001/OneDrive - University of South Australia/Documents/Fun/PyAI/Flappy Python",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\henem001\OneDrive - University of South Australia\Documents\Fun\PyAI\Flappy Python" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-PY-251.26094.141" />
+        <option value="bundled-python-sdk-9f8e2b94138c-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26094.141" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3c628029-31d0-4a39-8774-f5337e6f4e90" name="Changes" comment="" />
+      <created>1750391611016</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750391611016</updated>
+      <workItem from="1750391613349" duration="31595000" />
+    </task>
+    <task id="LOCAL-00001" summary="Make Game Playable">
+      <option name="closed" value="true" />
+      <created>1750645203001</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1750645203001</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add visuals">
+      <option name="closed" value="true" />
+      <created>1750652772699</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750652772699</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Pre Junie">
+      <option name="closed" value="true" />
+      <created>1750663735478</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1750663735478</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Post Junie">
+      <option name="closed" value="true" />
+      <created>1750663757727</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1750663757727</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Post Junie">
+      <option name="closed" value="true" />
+      <created>1750664687196</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1750664687196</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Generational Junie">
+      <option name="closed" value="true" />
+      <created>1750665346269</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1750665346269</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Make Game Playable" />
+    <MESSAGE value="Add visuals" />
+    <MESSAGE value="Pre Junie" />
+    <MESSAGE value="Post Junie" />
+    <MESSAGE value="Generational Junie" />
+    <option name="LAST_COMMIT_MESSAGE" value="Generational Junie" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Flappy Python/flappy_game.py</url>
+          <line>218</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PyAI$flappy_game_ai.coverage" NAME="flappy_game_ai Coverage Results" MODIFIED="1750666035122" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Flappy Python" />
+    <SUITE FILE_PATH="coverage/PyAI$flappy_game.coverage" NAME="flappy_game Coverage Results" MODIFIED="1750656427611" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Flappy Python" />
+    <SUITE FILE_PATH="coverage/PyAI$agent.coverage" NAME="agent Coverage Results" MODIFIED="1750667095053" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Flappy Python" />
+  </component>
+</project>

@@ -82,7 +82,9 @@ class FlappyGame:
 
         self.alive_birds = self.population_size
 
+        # Initialize first pipe height
         y = random.randint(self.h // 3, 2*self.h // 3)
+        self.last_pipe_height = y
         self.top_pipes = [self._spawn_top_pipe(y)]
         self.bottom_pipes = [self._spawn_bottom_pipe(y)]
         self.visual_top_pipes = [self._spawn_top_pipe(y)]
@@ -116,7 +118,9 @@ class FlappyGame:
 
         self.alive_birds = len(self.birds)
 
+        # Initialize first pipe height
         y = random.randint(self.h // 3, 2*self.h // 3)
+        self.last_pipe_height = y
         self.top_pipes = [self._spawn_top_pipe(y)]
         self.bottom_pipes = [self._spawn_bottom_pipe(y)]
         self.visual_top_pipes = [self._spawn_top_pipe(y)]
@@ -166,7 +170,7 @@ class FlappyGame:
         self._update_ui()
 
         # Check if all birds are dead
-        if self.alive_birds == 0:
+        if self.alive_birds < 1:
             self.game_over = True
 
         # Get fitness scores and scores
@@ -184,7 +188,19 @@ class FlappyGame:
 
         # Place a new pipe or wait
         if self.pipe_waiter * PIPE_FREQUENCY > max(100 - self.max_score, 50):
-            y = random.randint(self.h // 3, 2*self.h // 3)
+            # Generate a new random height that's different from the last one
+            new_height = random.randint(self.h // 4, 3*self.h // 4)
+
+            # Ensure the new height is different enough from the last one
+            # Keep generating until we get a height that's at least 50 pixels different
+            while abs(new_height - self.last_pipe_height) < 50:
+                new_height = random.randint(self.h // 4, 3*self.h // 4)
+
+            # Update the last pipe height
+            self.last_pipe_height = new_height
+
+            # Use the new height
+            y = new_height
             self.top_pipes.insert(0, self._spawn_top_pipe(y))
             self.bottom_pipes.insert(0, self._spawn_bottom_pipe(y))
             self.visual_top_pipes.insert(0, self._spawn_top_pipe(y))
@@ -233,8 +249,8 @@ class FlappyGame:
                     self.max_score = max(self.max_score, bird.score)
 
                     # Increase pipe velocity every 5 points
-                    if bird.score % 5 == 0:
-                        self.pipe_vel = min(self.pipe_vel + 1, MAX_PIPE_VEL)
+                    # if bird.score % 5 == 0:
+                    #     self.pipe_vel = min(self.pipe_vel + 1, MAX_PIPE_VEL)
 
                 # Add fitness for staying alive
                 bird.fitness += 0.1
