@@ -130,6 +130,41 @@ class Agent:
 
         return final_move
 
+def enhance_reward(reward, state_old, state_new, done, score):
+    """Enhance the reward signal to provide more learning guidance"""
+    enhanced_reward = reward
+
+    if not done:
+        # Reward for maintaining a good position (near the center of the pipe gap)
+        vertical_distance_old = abs(state_old[0])  # Distance from pipe center
+        vertical_distance_new = abs(state_new[0])  # Distance from pipe center
+
+        # Reward improvement in position
+        if vertical_distance_new < vertical_distance_old:
+            enhanced_reward += 1  # Reward for getting closer to the center
+
+        # Penalize extreme positions
+        if abs(state_new[0]) > 0.4:  # If far from center
+            enhanced_reward -= 0.5
+
+        # Reward for maintaining stable flight
+        if abs(state_new[2]) < 0.3:  # If velocity is moderate
+            enhanced_reward += 0.5
+
+        # Extra reward for approaching a pipe successfully
+        if 0 < state_new[1] < 0.2:  # Close to passing a pipe
+            enhanced_reward += 2
+
+    # Larger penalty for dying early
+    if done and score < 5:
+        enhanced_reward -= 10
+
+    # Larger reward for achieving high scores
+    if score > 10:
+        enhanced_reward += score * 0.5
+
+    return enhanced_reward
+
 def train():
     plot_scores = []
     plot_mean_scores = []
@@ -137,32 +172,60 @@ def train():
     record = 0
     agent = Agent()
     game = FlappyGame()
+
+    # Training stats
+    frame_iteration = 0
+    max_memory_size = 0
+
     while True:
         state_old = agent.get_state(game)
-
         final_move = agent.get_action(state_old)
 
+        # Get reward from game
         reward, done, score = game.play_step(final_move)
         state_new = agent.get_state(game)
 
-        agent.train_short_memory(state_old, final_move, reward, state_new, done)
-        agent.remember(state_old, final_move, reward, state_new, done)
+        # Enhance reward for better learning signals
+        enhanced_reward = enhance_reward(reward, state_old, state_new, done, score)
+
+        # Train short memory and get TD error for priority
+        td_error = agent.train_short_memory(state_old, final_move, enhanced_reward, state_new, done)
+
+        # Remember experience with priority
+        agent.remember(state_old, final_move, enhanced_reward, state_new, done, td_error)
+
+        frame_iteration += 1
+
+        # Update max memory size for tracking
+        max_memory_size = max(max_memory_size, len(agent.memory))
 
         if done:
             agent.n_games += 1
+
+            # Train on batch from replay memory
             agent.train_long_memory()
 
+            # Save model if score improves
             if score > record:
                 record = score
                 agent.model.save()
+                print(f"New record! {record} - Saving model...")
 
-            print('Game', agent.n_games, 'Score', score, 'Record', record)
+            # Print detailed stats
+            print(f'Game: {agent.n_games}, Score: {score}, Record: {record}, ' +
+                  f'Frames: {frame_iteration}, Memory: {len(agent.memory)}/{MAX_MEMORY}')
 
+            # Reset for next game
+            frame_iteration = 0
+
+            # Update plots
             plot_scores.append(score)
             total_score += score
             mean_score = total_score / agent.n_games
             plot_mean_scores.append(mean_score)
             plot(plot_scores, plot_mean_scores)
+
+            # Reset game
             game.reset()
 
 if __name__ == "__main__":
